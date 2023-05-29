@@ -2,6 +2,8 @@ import pingPixabay from './pixabay.js';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+let lightbox;
+
 async function drawPhotos({ photos, page }) {
   const photoContainer = document.querySelector('.gallery');
   if (page === '1') {
@@ -64,20 +66,32 @@ async function drawPhotos({ photos, page }) {
     });
   }
 
-  const lightbox = new SimpleLightbox('.gallery .photo-link', {
-    overlay: 'my-overlay-class',
-    scrollZoom: false,
-    captionsData: 'alt',
-    animationSpeed: 300,
-    fadeSpeed: 300,
-  });
+  if (!lightbox) {
+    lightbox = new SimpleLightbox('.gallery .photo-link', {
+      overlay: 'my-overlay-class',
+      scrollZoom: false,
+      captionsData: 'alt',
+      animationSpeed: 300,
+      fadeSpeed: 300,
+    });
+  }
+}
+
+function destroyLightbox() {
+  if (lightbox) {
+    lightbox.destroy();
+    lightbox = null;
+  }
 }
 
 export async function loadPhotos({ q, page }) {
   const photos = await pingPixabay({ q, page });
   if (!photos || photos.error) {
+    destroyLightbox();
     return;
   }
 
   drawPhotos({ photos, page });
+  lightbox.refresh();
+  return;
 }
