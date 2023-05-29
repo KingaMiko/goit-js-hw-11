@@ -1,6 +1,8 @@
 import pingPixabay from './pixabay.js';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
-function drawPhotos({ photos, page }) {
+async function drawPhotos({ photos, page }) {
   const photoContainer = document.querySelector('.gallery');
   if (page === '1') {
     photoContainer.innerHTML = '';
@@ -10,12 +12,17 @@ function drawPhotos({ photos, page }) {
     const container = document.createElement('div');
     container.classList.add('photo-card');
 
+    const a = document.createElement('a');
+    a.href = photo.largeImageURL;
+    a.classList.add('photo-link');
+    container.appendChild(a);
+
     const img = document.createElement('img');
     img.classList.add('photo');
     img.src = photo.webformatURL;
     img.alt = photo.tags;
     img.setAttribute('loading', 'lazy');
-    container.appendChild(img);
+    a.appendChild(img);
 
     const figCaption = document.createElement('div');
     figCaption.classList.add('info');
@@ -45,6 +52,7 @@ function drawPhotos({ photos, page }) {
   });
 
   photoContainer.append(...gallery);
+
   if (page !== '1') {
     const { height: cardHeight } = document
       .querySelector('.gallery .photo-card')
@@ -55,6 +63,14 @@ function drawPhotos({ photos, page }) {
       behavior: 'smooth',
     });
   }
+
+  const lightbox = new SimpleLightbox('.gallery .photo-link', {
+    overlay: 'my-overlay-class',
+    scrollZoom: false,
+    captionsData: 'alt',
+    animationSpeed: 300,
+    fadeSpeed: 300,
+  });
 }
 
 export async function loadPhotos({ q, page }) {
@@ -64,5 +80,4 @@ export async function loadPhotos({ q, page }) {
   }
 
   drawPhotos({ photos, page });
-  return;
 }
