@@ -10,6 +10,7 @@ export async function searchForPhotos(e) {
   const gallery = document.querySelector('.gallery');
   gallery.innerHTML = '';
   await loadPhotos({ q, page: '1' });
+  e.target.q.value = '';
 }
 
 export async function scrollHandler() {

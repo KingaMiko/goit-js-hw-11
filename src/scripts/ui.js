@@ -1,5 +1,4 @@
 import pingPixabay from './pixabay.js';
-import Notiflix from 'notiflix';
 
 function drawPhotos({ photos, page }) {
   const photoContainer = document.querySelector('.gallery');
