@@ -1,5 +1,5 @@
 import pingPixabay from './pixabay.js';
-//import Notiflix from 'notiflix';
+import Notiflix from 'notiflix';
 
 function drawPhotos({ photos, page }) {
   const photoContainer = document.querySelector('.gallery');
@@ -55,12 +55,12 @@ export async function loadPhotos({ q, page }) {
     return;
   }
 
-  // if (photos.length === 0) {
-  //   Notiflix.Notify.failure(
-  //     'Sorry, there are no images matching your search query. Please try again.'
-  //   );
-  //   return;
-  // }
+  if (photos.length === 0) {
+    Notiflix.Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.'
+    );
+    return;
+  }
 
   drawPhotos({ photos, page });
   return;
