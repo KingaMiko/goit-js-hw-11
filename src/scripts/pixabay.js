@@ -20,9 +20,13 @@ export default async function pingPixabay({ q = '', page = '1' }) {
     const { hits: photos, totalHits } = await response.json();
 
     if (page !== '1' && photos.length === 0) {
-      Notiflix.Notify.failure(
-        "We're sorry, but you've reached the end of search results."
-      );
+      if (page > Math.ceil(totalHits / DEFAULT_PIXABAY_PARAMS.per_page)) {
+        Notiflix.Notify.warning("You've reached the end of search results.");
+      } else {
+        Notiflix.Notify.failure(
+          "We're sorry, but you've reached the end of search results."
+        );
+      }
       return;
     }
 
