@@ -46,19 +46,21 @@ function drawPhotos({ photos, page }) {
   });
 
   photoContainer.append(...gallery);
+  if (page !== '1') {
+    const { height: cardHeight } = document
+      .querySelector('.gallery .photo-card')
+      .getBoundingClientRect();
+
+    window.scrollBy({
+      top: cardHeight * 2,
+      behavior: 'smooth',
+    });
+  }
 }
 
 export async function loadPhotos({ q, page }) {
   const photos = await pingPixabay({ q, page });
-  if (photos.error) {
-    alert(photos.error);
-    return;
-  }
-
-  if (photos.length === 0) {
-    Notiflix.Notify.failure(
-      'Sorry, there are no images matching your search query. Please try again.'
-    );
+  if (!photos || photos.error) {
     return;
   }
 

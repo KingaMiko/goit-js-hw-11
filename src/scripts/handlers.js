@@ -1,11 +1,14 @@
 import { loadPhotos } from './ui.js';
+const gallery = document.querySelector('.gallery');
+gallery.innerHTML = '';
 
 export async function searchForPhotos(e) {
   e.preventDefault();
 
   e.target.page.value = '1';
   const q = e.target.q.value;
-
+  const gallery = document.querySelector('.gallery');
+  gallery.innerHTML = '';
   await loadPhotos({ q, page: '1' });
 }
 
