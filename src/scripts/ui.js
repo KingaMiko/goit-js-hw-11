@@ -2,6 +2,8 @@ import pingPixabay from './pixabay.js';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+let lightbox = null;
+
 async function drawPhotos({ photos, page }) {
   const photoContainer = document.querySelector('.gallery');
   if (page === '1') {
@@ -88,6 +90,9 @@ export async function loadPhotos({ q, page }) {
   }
 
   drawPhotos({ photos, page });
-  lightbox.refresh();
+  if (lightbox) {
+    lightbox.refreshElements();
+    lightbox.refresh();
+  }
   return;
 }
