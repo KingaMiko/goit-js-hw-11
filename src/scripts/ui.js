@@ -2,8 +2,6 @@ import pingPixabay from './pixabay.js';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-let lightbox;
-
 async function drawPhotos({ photos, page }) {
   const photoContainer = document.querySelector('.gallery');
   if (page === '1') {
@@ -66,15 +64,13 @@ async function drawPhotos({ photos, page }) {
     });
   }
 
-  if (!lightbox) {
-    lightbox = new SimpleLightbox('.gallery .photo-link', {
-      overlay: 'my-overlay-class',
-      scrollZoom: false,
-      captionsData: 'alt',
-      animationSpeed: 300,
-      fadeSpeed: 300,
-    });
-  }
+  const lightbox = new SimpleLightbox('.gallery .photo-link', {
+    overlay: 'my-overlay-class',
+    scrollZoom: false,
+    captionsData: 'alt',
+    animationSpeed: 300,
+    fadeSpeed: 300,
+  });
 }
 
 function destroyLightbox() {
