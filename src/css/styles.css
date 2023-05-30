@@ -109,3 +109,11 @@ body {
 /* body.hidden-scroll {
   background-color: rgb(0, 0, 0);
 } */
+
+.notiflix-notification {
+  top: 10px;
+  right: 10px;
+  left: auto;
+  bottom: auto;
+  position: fixed;
+}

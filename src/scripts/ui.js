@@ -1,6 +1,7 @@
 import pingPixabay from './pixabay.js';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import 'simplelightbox/dist/simple-lightbox.min.js';
 
 let lightbox = null;
 const loadedPhotos = [];
@@ -93,7 +94,7 @@ function destroyLightbox() {
 
 export async function loadPhotos({ q, page }) {
   const photos = await pingPixabay({ q, page });
-  if (!photos || photos.error) {
+  if (photos.error) {
     destroyLightbox();
     return;
   }
