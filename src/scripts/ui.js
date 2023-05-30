@@ -3,14 +3,19 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 let lightbox = null;
+const loadedPhotos = [];
 
 async function drawPhotos({ photos, page }) {
   const photoContainer = document.querySelector('.gallery');
   if (page === '1') {
     photoContainer.innerHTML = '';
+    loadedPhotos.length = 0;
   }
 
-  const gallery = photos.map(photo => {
+  const newPhotos = photos.filter(photo => !loadedPhotos.includes(photo.id));
+  const gallery = newPhotos.map(photo => {
+    loadedPhotos.push(photo.id);
+
     const container = document.createElement('div');
     container.classList.add('photo-card');
 
@@ -66,13 +71,17 @@ async function drawPhotos({ photos, page }) {
     });
   }
 
-  const lightbox = new SimpleLightbox('.gallery .photo-link', {
-    overlay: 'my-overlay-class',
-    scrollZoom: false,
-    captionsData: 'alt',
-    animationSpeed: 300,
-    fadeSpeed: 300,
-  });
+  if (!lightbox) {
+    lightbox = new SimpleLightbox('.gallery .photo-link', {
+      overlay: 'my-overlay-class',
+      scrollZoom: false,
+      captionsData: 'alt',
+      animationSpeed: 300,
+      fadeSpeed: 300,
+    });
+  } else {
+    lightbox.refresh();
+  }
 }
 
 function destroyLightbox() {
@@ -90,9 +99,5 @@ export async function loadPhotos({ q, page }) {
   }
 
   drawPhotos({ photos, page });
-  if (lightbox) {
-    lightbox.refreshElements();
-    lightbox.refresh();
-  }
   return;
 }
